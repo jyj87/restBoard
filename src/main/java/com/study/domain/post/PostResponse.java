@@ -13,7 +13,7 @@ public class PostResponse {
     private int viewCnt;
     private Boolean noticeYn; //공지글 여부
     private Boolean deleteYn; //삭제 여부
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
 }

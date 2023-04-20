@@ -86,6 +86,6 @@ public class PostController {
     // 사용자에게 메세지 전달 이후, 페이지를 리다이렉트 한다.
     private String showMessageAndRedirect(MessageDto params, Model model) {
         model.addAttribute("params", params);
-        return "common/messageAndRedirect";
+        return "common/messageRedirect";
     }
 }

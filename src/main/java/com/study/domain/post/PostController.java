@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -60,26 +62,36 @@ public class PostController {
 
     // 기존 글 수정
     @PostMapping("/post/update.do")
-    public String updatePost(PostRequest postRequest, Model model) {
+    public String updatePost(PostRequest postRequest, SearchDto queryParams, Model model) {
         postService.updatePost(postRequest);
         MessageDto message = new MessageDto(
                 "게시글 수정 완료",
                 "/post/list.do",
                 RequestMethod.GET,
-                null);
+                queryParamsToMap(queryParams));
         return showMessageAndRedirect(message, model);
     }
 
     // 게시글 삭제
     @PostMapping("/post/delete.do")
-    public String deletePost(@RequestParam(value = "id") Long id, Model model) {
+    public String deletePost(@RequestParam(value = "id") Long id, SearchDto queryParams, Model model) {
         postService.deletePost(id);
-        MessageDto message = new MessageDto(
-                "게시글 수정 완료",
+        MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.",
                 "/post/list.do",
                 RequestMethod.GET,
-                null);
+                queryParamsToMap(queryParams));
         return showMessageAndRedirect(message, model);
+    }
+
+    // 쿼리 스트링 파라미터를 Map에 담아 반환
+    private Map<String, Object> queryParamsToMap(final SearchDto queryParams) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("page", queryParams.getPage());
+        data.put("recordSize", queryParams.getRecordSize());
+        data.put("pageSize", queryParams.getPageSize());
+        data.put("keyword", queryParams.getKeyword());
+        data.put("searchType", queryParams.getSearchType());
+        return data;
     }
 
     // 사용자에게 메세지 전달 이후, 페이지를 리다이렉트 한다.

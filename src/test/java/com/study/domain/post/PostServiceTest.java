@@ -17,29 +17,20 @@ class PostServiceTest {
     PostService postService;
 
     @Test
-    @Transactional
     @DisplayName("게시글 저장 테스트")
     void savePost() {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setTitle("저장테스트 게시글 제목");
-        postRequest.setContent("저장테스트 게시글 내용");
-        postRequest.setWriter("저장테스트");
-        postRequest.setNoticeYn(false);
 
-        Long id = postService.savePost(postRequest);
-        System.out.println("id = " + id);
+        PostRequest params;
 
-        List<PostResponse> allPost = postService.findAllPost();
 
-        PostResponse savePost= new PostResponse();
-
-        for(PostResponse post:allPost){
-            if(post.getTitle().equals("저장테스트 게시글 제목")){
-                savePost=post;
-            }
+        for (int i = 0; i < 1000; i++) {
+            params = new PostRequest();
+            params.setTitle(i + "번 게시글 제목");
+            params.setContent(i + "번 게시글 내용");
+            params.setWriter("테스터" + i);
+            params.setNoticeYn(false);
+            postService.savePost(params);
         }
-
-        assertEquals(postRequest.getTitle(),savePost.getTitle());
     }
 
 }

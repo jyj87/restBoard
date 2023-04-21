@@ -1,13 +1,12 @@
 package com.study.domain.post;
 
 import com.study.common.dto.MessageDto;
+import com.study.common.dto.SearchDto;
+import com.study.common.paging.PagingResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,9 +43,9 @@ public class PostController {
 
     // 게시글 리스트
     @GetMapping("/post/list.do")
-    public String openPostList(Model model) {
-        List<PostResponse> posts = postService.findAllPost();
-        model.addAttribute("posts", posts);
+    public String openPostList(@ModelAttribute("params") SearchDto params, Model model) {
+        PagingResponse<PostResponse> response = (PagingResponse<PostResponse>) postService.findAllPost(params);
+        model.addAttribute("response", response);
         return "post/list";
     }
 
@@ -73,7 +72,7 @@ public class PostController {
 
     // 게시글 삭제
     @PostMapping("/post/delete.do")
-    public String deletePost(@RequestParam(value = "id") Long id,Model model) {
+    public String deletePost(@RequestParam(value = "id") Long id, Model model) {
         postService.deletePost(id);
         MessageDto message = new MessageDto(
                 "게시글 수정 완료",

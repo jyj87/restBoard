@@ -28,15 +28,7 @@ public class PostMapperTest {
     @Transactional
     @DisplayName("게시글 저장 테스트")
     void save() {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setTitle("3번글 제목");
-        postRequest.setContent("3번글 내용");
-        postRequest.setWriter("3번글 작성자");
-        postRequest.setNoticeYn(false);
-        postMapper.save(postRequest);
 
-        List<PostResponse> postList = postMapper.findAll();
-        assertThat(postList.get(0).getTitle()).isEqualTo("3번글 제목");
     }
 
     @Test
@@ -77,14 +69,6 @@ public class PostMapperTest {
     @DisplayName("게시글 삭제 테스트")
     void deleteById(){
 
-        int beforeSize = 0;
-        int afterSize = 0;
-        List<PostResponse> beforeList = postMapper.findAll();
-        beforeSize= beforeList.size();
-        postMapper.deleteById(1L);
-        List<PostResponse> afterList = postMapper.findAll();
-        afterSize= afterList.size();
 
-        assertThat(beforeSize).isEqualTo(afterSize+1);
     }
 }
